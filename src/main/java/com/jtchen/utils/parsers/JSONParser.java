@@ -1,16 +1,16 @@
-package com.jtchen.utils;
+package com.jtchen.utils.parsers;
 
-import com.jtchen.beans.Pair;
+import com.jtchen.beans.JSONArray;
 import com.jtchen.factory.JSONFactory;
 import com.jtchen.factory.impl.LinkedJSONFactory;
 import com.jtchen.json.JSON;
+import com.jtchen.utils.Parser;
 import com.jtchen.utils.exception.JSONException;
-import com.jtchen.utils.parsers.BooleanParser;
-import com.jtchen.utils.parsers.NullParser;
-import com.jtchen.utils.parsers.NumberParser;
-import com.jtchen.utils.parsers.StringParser;
 
-import static com.jtchen.utils.JSONParser.State.*;
+import java.util.Stack;
+
+import static com.jtchen.utils.parsers.JSONParser.Brackets.LEFT_BRACKETS;
+import static com.jtchen.utils.parsers.JSONParser.State.*;
 
 /**
  * @author jtchen
@@ -24,10 +24,10 @@ public class JSONParser implements Parser<JSON> {
 	private final NullParser nullParser = new NullParser();
 	private final NumberParser numberParser = new NumberParser();
 	private final StringParser stringParser = new StringParser();
+	private final JSONArrayParser arrayParser = new JSONArrayParser();
 
-	private JSON json;
 	private State state;
-	private Pair<String, Object> keyAndValue;
+	private final Stack<Object> stack = new Stack<>();
 
 
 	public JSONParser() {
@@ -42,43 +42,55 @@ public class JSONParser implements Parser<JSON> {
 
 	@Override
 	public JSON commit() {
-		boolean isEnd = isEnd();
-		JSON result = this.json;
+		if (!isEnd()) throw new JSONException("the json sentences is not perfect");
+		JSON result = (JSON) stack.pop();
 
 		init();
-		if (!isEnd) throw new JSONException("the json sentences is not perfect");
 
 		return result;
+	}
+
+
+	private boolean isSpace(char ch) {
+		return ch == ' ' || ch == '\n' || ch == '\t';
 	}
 
 	@Override
 	public boolean parse(char ch) {
 		switch (state) {
 			case START:
-				if (ch == ' ' || ch == '\n' || ch == '\t') {
+				if (isSpace(ch)) {
 
 				} else if (ch == '{') {
+					stack.push(LEFT_BRACKETS);
 					state = LEFT;
 				} else return false;
 				break;
 			case END:
-				if (ch != ' ' && ch != '\n' && ch != '\t')
-					return false;
+				if (isSpace(ch)) {}
+				else if (ch == ',') {
+					state = POINT;
+				}
 				break;
 			case LEFT:
 				if (stringParser.isStart(ch)) {
 					stringParser.parse(ch);
 					state = STR_FRONT;
-				} else if (ch == ' ' || ch == '\n' || ch == '\t') {
+				} else if (isSpace(ch)) {
 
 				} else if (ch == '}') {
 					state = END;
+					if (!stack.isEmpty() && stack.peek() == LEFT_BRACKETS) {
+						if (stack.isEmpty()) return false;
+						stack.pop();
+						stack.push(factory.createJSON());
+					} else return false;
 				} else return false;
 				break;
 			case NUM:
 				if (numberParser.parse(ch)) {
 
-				} else if (ch == ',' || ch == ' ' || ch == '}' || ch == '\n' || ch == '\t') {
+				} else if (ch == ',' || isSpace(ch) || ch == '}') {
 					Double commit = numberParser.commit();
 					putInJSON(ch, commit);
 				} else return false;
@@ -86,16 +98,23 @@ public class JSONParser implements Parser<JSON> {
 			case STR:
 				if (stringParser.parse(ch)) {
 
-				} else if (ch == ',' || ch == ' ' || ch == '}' || ch == '\n' || ch == '\t') {
+				} else if (ch == ',' || isSpace(ch) || ch == '}') {
 					String commit = stringParser.commit();
 					putInJSON(ch, commit);
 				} else return false;
 				break;
+			case ARRAY:
+				if (arrayParser.parse(ch)) {
 
+				} else if (ch == ',' || isSpace(ch) || ch == '}') {
+					JSONArray commit = arrayParser.commit();
+					putInJSON(ch, commit);
+				} else return false;
+				break;
 			case BOOL:
 				if (booleanParser.parse(ch)) {
 
-				} else if (ch == ',' || ch == ' ' || ch == '}' || ch == '\n' || ch == '\t') {
+				} else if (ch == ',' || isSpace(ch) || ch == '}') {
 					Boolean commit = booleanParser.commit();
 					putInJSON(ch, commit);
 				} else return false;
@@ -103,14 +122,17 @@ public class JSONParser implements Parser<JSON> {
 			case NULL:
 				if (nullParser.parse(ch)) {
 
-				} else if (ch == ',' || ch == ' ' || ch == '}' || ch == '\n' || ch == '\t') {
+				} else if (ch == ',' || isSpace(ch) || ch == '}') {
 					Object commit = nullParser.commit();
 					putInJSON(ch, commit);
 				} else return false;
 				break;
 			case COLON:
-				if (ch == ' ' || ch == '\n' || ch == '\t') {
+				if (isSpace(ch)) {
 
+				} else if (ch == '{') {
+					stack.push(LEFT_BRACKETS);
+					state = LEFT;
 				} else if (numberParser.isStart(ch)) {
 					numberParser.parse(ch);
 					state = NUM;
@@ -123,16 +145,19 @@ public class JSONParser implements Parser<JSON> {
 				} else if (nullParser.isStart(ch)) {
 					nullParser.parse(ch);
 					state = NULL;
+				} else if (arrayParser.isStart(ch)) {
+					arrayParser.parse(ch);
+					state = ARRAY;
 				} else return false;
 				break;
 			case STR_FRONT:
 				if (stringParser.parse(ch)) {
 
-				} else if (ch == ' ' || ch == ':' || ch == '\n' || ch == '\t') {
+				} else if (isSpace(ch) || ch == ':') {
 					String commit = stringParser.commit();
-					keyAndValue.setKey(commit);
+					stack.push(commit);
 
-					if (ch == ' ' || ch == '\n' || ch == '\t') {
+					if (isSpace(ch)) {
 						state = SPACE_AFTER_STR_FRONT;
 					} else {
 						state = COLON;
@@ -140,39 +165,57 @@ public class JSONParser implements Parser<JSON> {
 				} else return false;
 				break;
 			case SPACE_BEFORE_COMMA:
-				if (ch == ' ' || ch == '\n' || ch == '\t') {
+				if (isSpace(ch)) {
 
 				} else if (ch == '}') {
-					state = END;
+					popToJSON();
 				} else if (ch == ',') {
-					state = LEFT;
+					state = POINT;
 				} else return false;
 				break;
 
 			case SPACE_AFTER_STR_FRONT:
-				if (ch == ' ' || ch == '\n' || ch == '\t') {
+				if (isSpace(ch)) {
 
 				} else if (ch == ':') {
 					state = COLON;
+				} else return false;
+				break;
+
+			case POINT:
+				if (isSpace(ch)) {
+				} else if (ch == '"') {
+					state = STR_FRONT;
+					stringParser.parse(ch);
 				} else return false;
 				break;
 		}
 		return true;
 	}
 
-	private void putInJSON(char ch, Object commit) {
-		keyAndValue.setValue(commit);
+	private void popToJSON() {
+		JSON json = factory.createJSON();
+		while (stack.peek() != LEFT_BRACKETS) {
+			Object value = stack.pop();
+			String key = (String) stack.pop();
+			json.put(key, value);
+		}
 
-		json.put(keyAndValue.getKey(), keyAndValue.getValue());
-		keyAndValue.init();
+		stack.pop();
+		stack.push(json);
+		state = END;
+	}
+
+	private void putInJSON(char ch, Object commit) {
+		stack.push(commit);
 
 
 		if (ch == ',') {
-			state = LEFT;
-		} else if (ch == ' ' || ch == '\n' || ch == '\t') {
+			state = POINT;
+		} else if (isSpace(ch)) {
 			state = SPACE_BEFORE_COMMA;
 		} else {
-			state = END;
+			popToJSON();
 		}
 	}
 
@@ -184,15 +227,14 @@ public class JSONParser implements Parser<JSON> {
 
 	@Override
 	public void init() {
-		json = factory.createJSON();
+		stack.clear();
 		state = START;
-		keyAndValue = new Pair();
 
 	}
 
 	@Override
 	public boolean isEnd() {
-		return state == END;
+		return state == END && stack.size() == 1;
 	}
 
 	/*
@@ -233,7 +275,15 @@ public class JSONParser implements Parser<JSON> {
 		BOOL,
 		NULL,
 		SPACE_BEFORE_COMMA,
+		ARRAY,
+		POINT,
 		END
+	}
+
+	enum Brackets {
+		LEFT_BRACKETS,
+		RIGHT_BRACKETS;
+
 	}
 
 }

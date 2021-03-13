@@ -4,7 +4,7 @@ import com.jtchen.json.AbstractJSON;
 import com.jtchen.factory.JSONFactory;
 import com.jtchen.json.JSON;
 import com.jtchen.json.impl.LinkedJSON;
-import com.jtchen.utils.JSONParser;
+import com.jtchen.utils.parsers.JSONParser;
 
 /**
  * @author jtchen

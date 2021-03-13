@@ -3,7 +3,6 @@ package com.jtchen.utils.parsers;
 import com.jtchen.utils.Parser;
 import com.jtchen.utils.exception.JSONException;
 
-import static com.jtchen.utils.parsers.NullParser.State.START;
 import static com.jtchen.utils.parsers.NullParser.State.*;
 
 /**
@@ -22,6 +21,7 @@ public class NullParser implements Parser<Object> {
 
 	@Override
 	public Object commit() {
+
 
 		String result = builder.toString();
 		boolean isEnd = isEnd();
