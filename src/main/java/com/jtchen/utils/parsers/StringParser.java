@@ -28,35 +28,6 @@ public class StringParser implements Parser<String> {
 		else return result;
 	}
 
-	/*@Override
-	public boolean parse(char ch) {
-		switch (state) {
-			case READING:
-				*//*if (ch == '\\') {
-					builder.append('\\').append('\\');
-				} else if (ch == '/') {
-					builder.append('\\').append('/');
-				} else if (ch == '\b') {
-					builder.append('\\').append('b');
-				} else if (ch == '\f') {
-					builder.append('\\').append('f');
-				} else if (ch == '\n') {
-					builder.append('\\').append('n');
-				} else if (ch == '\r') {
-					builder.append('\\').append('r');
-				} else if (ch == '\t') {
-					builder.append('\\').append('t');
-				} else *//*if (ch == '"') {
-					state = END;
-				} else builder.append(ch);
-				break;
-			case START:
-				if (ch == '"') state = READING;
-				else return false;
-				break;
-		}
-		return true;
-	}*/
 
 	@Override
 	public boolean parse(char ch) {
@@ -73,34 +44,44 @@ public class StringParser implements Parser<String> {
 					state = ESCAPE;
 				} else if (ch == '"') {
 					state = END;
+				} else if (ch == '\b') {
+					builder.append('\\').append('b');
+				} else if (ch == '\n') {
+					builder.append('\\').append('n');
+				} else if (ch == '\f') {
+					builder.append('\\').append('f');
+				} else if (ch == '\t') {
+					builder.append('\\').append('t');
+				} else if (ch == '\r') {
+					builder.append('\\').append('r');
 				} else {
 					builder.append(ch);
 				}
 				break;
 			case ESCAPE:
 				if (ch == '\\') {
-					builder.append('\\');
+					builder.append('\\').append('\\');
 					state = READING;
 				} else if (ch == '/') {
 					builder.append('/');
 					state = READING;
 				} else if (ch == 'b') {
-					builder.append('\b');
+					builder.append('\\').append('b');
 					state = READING;
 				} else if (ch == 'f') {
-					builder.append('\f');
+					builder.append('\\').append('f');
 					state = READING;
 				} else if (ch == 'n') {
-					builder.append('\n');
+					builder.append('\\').append('n');
 					state = READING;
 				} else if (ch == 'r') {
-					builder.append('\r');
+					builder.append('\\').append('r');
 					state = READING;
 				} else if (ch == 't') {
-					builder.append('\t');
+					builder.append('\\').append('t');
 					state = READING;
 				} else if (ch == '"') {
-					builder.append('"');
+					builder.append('\\').append('"');
 					state = READING;
 				} else return false;
 

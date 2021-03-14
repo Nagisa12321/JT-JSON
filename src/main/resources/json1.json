@@ -1,17 +1,10 @@
 {
-  "arr": [
-    1.0,
-    2.0,
-    3.0
-  ],
+  "name": "Jack (\"Bee\") Nimble",
   "format": {
     "width": 1920.0,
     "frame rate": 24.0,
     "type": "rect",
     "interlace": false,
     "height": 1080.0
-  },
-  "name": "Jack ("
-  Bee
-  ") Nimble"
+  }
 }

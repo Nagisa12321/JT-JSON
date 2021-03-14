@@ -45,6 +45,11 @@ public class JSONArrayParserTest {
 	}
 
 
+	@Test
+	public void test2() {
+		parseArray("[1, 2, 4],");
+	}
+
 	public void parseArray(String s) {
 		char[] chs = s.toCharArray();
 

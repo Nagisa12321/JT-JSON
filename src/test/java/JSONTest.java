@@ -67,11 +67,15 @@ public class JSONTest {
 
 	@Test
 	public void testAlibabaJSON() {
-		JSONObject parse = (JSONObject) com.alibaba.fastjson.JSON.parse("[\n" +
-				"  1,\n" +
-				"  2,\n" +
-				"  3\n" +
-				"]");
+		String s = "{\"name\":123}";
+		JSONObject parse = (JSONObject) com.alibaba.fastjson.JSON.parse(s);
+
+		System.out.println(parse);
+
+		LinkedJSONFactory factory = new LinkedJSONFactory();
+		JSON parse1 = factory.parse(s);
+		System.out.println(parse1);
+
 
 	}
 

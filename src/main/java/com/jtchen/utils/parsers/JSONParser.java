@@ -67,8 +67,10 @@ public class JSONParser implements Parser<JSON> {
 				} else return false;
 				break;
 			case END:
-				if (isSpace(ch)) {}
-				else if (ch == ',') {
+				if (isSpace(ch)) {
+				} else if (ch == '}') {
+					popToJSON();
+				} else if (ch == ',') {
 					state = POINT;
 				}
 				break;

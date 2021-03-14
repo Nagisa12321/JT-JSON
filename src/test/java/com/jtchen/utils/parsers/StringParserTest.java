@@ -1,8 +1,8 @@
 package com.jtchen.utils.parsers;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONException;
 import com.alibaba.fastjson.JSONObject;
+import com.jtchen.factory.impl.LinkedJSONFactory;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -137,5 +137,63 @@ public class StringParserTest {
 
 
 		System.out.println("result: " + result + ", alibaba result: " + json);
+	}
+
+	@Test
+	public void test7() {
+		String s = "{\n" +
+				"  \"name\": \"Jack (\\\"Bee\\\") Nimble\",\n" +
+				"  \"arr\": [\n" +
+				"    1.0,\n" +
+				"    2.0,\n" +
+				"    3.0\n" +
+				"  ],\n" +
+				"  \"format\": {\n" +
+				"    \"width\": 1920.0,\n" +
+				"    \"frame rate\": 24.0,\n" +
+				"    \"type\": \"rect\",\n" +
+				"    \"interlace\": false,\n" +
+				"    \"height\": 1080.0\n" +
+				"  }\n" +
+				"}";
+
+		LinkedJSONFactory factory = new LinkedJSONFactory();
+		com.jtchen.json.JSON parse = factory.parse(s);
+
+		System.out.println(parse);
+
+		String string = parse.toString();
+		com.jtchen.json.JSON parse1 = factory.parse(string);
+
+		System.out.println(parse1);
+
+	}@Test
+	public void test8() {
+		String s = "{\n" +
+				"  \"na\\\\me\": \"Ja\b\n\t\fck (\\\"Bee\\\") Nimble\",\n" +
+				"  \"arr\": [\n" +
+				"    1.0,\n" +
+				"    2.0,\n" +
+				"    3.0\n" +
+				"  ],\n" +
+				"  \"for\\n\\t\\fmat\": {\n" +
+				"    \"width\": 1920.0,\n" +
+				"    \"frame rate\": 24.0,\n" +
+				"    \"type\": \"rect\",\n" +
+				"    \"interlace\": false,\n" +
+				"    \"heig\\\\\\fht\": 1080.0\n" +
+				"  }\n" +
+				"}";
+
+		LinkedJSONFactory factory = new LinkedJSONFactory();
+		com.jtchen.json.JSON parse = factory.parse(s);
+
+		System.out.println(parse);
+
+		String string = parse.toString();
+		com.jtchen.json.JSON parse1 = factory.parse(string);
+
+		System.out.println(parse1);
+
 	}
 }

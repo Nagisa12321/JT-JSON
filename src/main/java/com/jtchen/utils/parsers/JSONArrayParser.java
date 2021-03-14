@@ -64,6 +64,7 @@ public class JSONArrayParser implements Parser<JSONArray> {
 					stack.pop();
 					stack.push(jsonArray);
 				} else if (ch == ',') {
+					if (stack.size() == 1) return false;
 					state = POINT;
 				} else return false;
 				break;
