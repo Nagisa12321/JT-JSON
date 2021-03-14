@@ -70,6 +70,9 @@ public abstract class JSONFactory {
 			if (value instanceof String)
 				builder.append('"').append(value).append('"');
 
+			else if (value == null)
+				builder.append("null");
+
 				// 若是arr要调用deepToString() 方法
 			else if (value.getClass().isArray()) {
 				builder.append(Arrays.deepToString((Object[]) value));

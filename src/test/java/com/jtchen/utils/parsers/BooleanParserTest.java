@@ -3,7 +3,7 @@ package com.jtchen.utils.parsers;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class BooleanParserTest {
 
@@ -17,10 +17,10 @@ public class BooleanParserTest {
 
 	@Test
 	public void test1() {
-		 TEST_BOOLEAN(true, "true");
-		 TEST_BOOLEAN(false, "false");
 		TEST_BOOLEAN(true, "true");
-		 TEST_BOOLEAN(true, "true");
+		TEST_BOOLEAN(false, "false");
+		TEST_BOOLEAN(true, "true");
+		TEST_BOOLEAN(true, "true");
 	}
 
 	public void TEST_BOOLEAN(boolean b, String bool) {

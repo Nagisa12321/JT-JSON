@@ -82,7 +82,7 @@ public class LinkedJSON extends AbstractJSON {
 		if (node == null) return null;
 
 			// 如果存在key, 则返回对应的值
-		else return node.value;
+		else return node.child.value;
 	}
 
 	@Override
