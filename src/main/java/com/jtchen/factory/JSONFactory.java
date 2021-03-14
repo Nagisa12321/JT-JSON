@@ -9,10 +9,23 @@ import java.util.*;
  * @version 1.0
  * @date 2021/3/10 20:22
  */
+@SuppressWarnings("unused")
 public abstract class JSONFactory {
 
+	/**
+	 * 通过字符串生产出具体JSON对象
+	 *
+	 * 抽象化原因: 我们不知道要生产出的是具体哪种JSON类型
+	 * 可能是MAPJSON, 也有可能是LINKEDJSON, 以后可能还会新增新的JSON,
+	 * 让子类决定我们应该产出什么JSON
+	 *
+	 * @param s 字符串
+	 * @return 具体JSON对象
+	 */
 	public abstract JSON parse(String s);
 
+
+	// 通过一串字符串, 生产出一串JSON
 	public List<JSON> parseJSONs(List<String> list) {
 		ArrayList<JSON> jsons = new ArrayList<>();
 		for (String s : list)
@@ -21,6 +34,7 @@ public abstract class JSONFactory {
 		return jsons;
 	}
 
+	// 通过一个MAP生产出JSON对象
 	public JSON parse(Map<String, Object> map) {
 		JSON json = createJSON();
 
@@ -34,6 +48,7 @@ public abstract class JSONFactory {
 
 
 	// 无格式解析json对象
+	// 主要用于JSON.toString()方法
 	public String unformattedParse(JSON json) {
 		Set<Map.Entry<String, Object>> set = json.entrySet();
 		StringBuilder builder = new StringBuilder();
@@ -69,5 +84,6 @@ public abstract class JSONFactory {
 		return builder.toString();
 	}
 
+	// 由子类决定生产出什么种类的JSON对象
 	public abstract JSON createJSON();
 }

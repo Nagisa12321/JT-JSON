@@ -17,10 +17,10 @@ public class BooleanParserTest {
 
 	@Test
 	public void test1() {
-		// TEST_BOOLEAN(true, "true");
-		// TEST_BOOLEAN(false, "false");
-		TEST_BOOLEAN(false, "tr");
-		// TEST_BOOLEAN(true, "true");
+		 TEST_BOOLEAN(true, "true");
+		 TEST_BOOLEAN(false, "false");
+		TEST_BOOLEAN(true, "true");
+		 TEST_BOOLEAN(true, "true");
 	}
 
 	public void TEST_BOOLEAN(boolean b, String bool) {
@@ -28,9 +28,9 @@ public class BooleanParserTest {
 		for (char c : chs) {
 			parser.parse(c);
 		}
-
-		System.out.println(parser.commit());
-		assertEquals(b, parser.commit());
+		Boolean commit = parser.commit();
+		System.out.println(commit);
+		assertEquals(b, commit);
 	}
 
 }

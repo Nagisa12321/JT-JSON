@@ -2,6 +2,7 @@ package com.jtchen.utils.parsers;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jtchen.factory.JSONFactory;
 import com.jtchen.factory.impl.LinkedJSONFactory;
 import org.junit.Test;
 
@@ -61,7 +62,7 @@ public class StringParserTest {
 		TEST_SAME_AS_ALIBABA_JSON("\"hello world\"");
 		TEST_SAME_AS_ALIBABA_JSON("\"just a test\"");
 		TEST_SAME_AS_ALIBABA_JSON("\"test\n\"");
-		TEST_SAME_AS_ALIBABA_JSON("\"test\\\"");
+		TEST_SAME_AS_ALIBABA_JSON("\"test\"");
 		TEST_SAME_AS_ALIBABA_JSON("\"\"");
 	}
 
@@ -157,7 +158,7 @@ public class StringParserTest {
 				"  }\n" +
 				"}";
 
-		LinkedJSONFactory factory = new LinkedJSONFactory();
+		JSONFactory factory = LinkedJSONFactory.getInstance();
 		com.jtchen.json.JSON parse = factory.parse(s);
 
 		System.out.println(parse);
@@ -185,7 +186,7 @@ public class StringParserTest {
 				"  }\n" +
 				"}";
 
-		LinkedJSONFactory factory = new LinkedJSONFactory();
+		JSONFactory factory = LinkedJSONFactory.getInstance();
 		com.jtchen.json.JSON parse = factory.parse(s);
 
 		System.out.println(parse);

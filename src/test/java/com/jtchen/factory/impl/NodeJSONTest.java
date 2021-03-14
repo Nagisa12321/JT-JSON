@@ -9,7 +9,7 @@ public class NodeJSONTest {
 	private LinkedJSON nj;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		nj = new LinkedJSON();
 	}

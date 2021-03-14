@@ -4,8 +4,6 @@ import com.jtchen.factory.impl.LinkedJSONFactory;
 import com.jtchen.json.JSON;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class JSONFactoryTest {
 
 	@Test
@@ -20,8 +18,7 @@ public class JSONFactoryTest {
 				"}";
 
 
-
-		JSONFactory jsonFactory = new LinkedJSONFactory();
+		JSONFactory jsonFactory = LinkedJSONFactory.getInstance();
 		JSON parse = jsonFactory.parse(s);
 		System.out.println(parse);
 	}

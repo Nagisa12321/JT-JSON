@@ -9,8 +9,7 @@ import java.util.Map;
  */
 public interface JSON extends Map<String, Object> {
 
-
-	// int getIntByKey()
-	// ...
-
+	// 声明JSON对象是一个类似MAP的数据结构
+	// 日后可能会添加方法
+	// 如getIntegerByKey(String key) ... etc.
 }

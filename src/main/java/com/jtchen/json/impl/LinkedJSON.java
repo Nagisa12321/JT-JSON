@@ -10,6 +10,32 @@ import java.util.*;
  * @date 2021/3/10 19:43
  */
 public class LinkedJSON extends AbstractJSON {
+	/*
+	采用多级双端链表思路完成JSON对象的数据结构实现
+	采用尾巴插入法来实现
+	JSON的每一个层级就是双端链表的每个层级
+	如下JSON
+	{
+  		"name": "Jack (\"Bee\") Nimble",
+  		"format": {
+    		"width": 1920.0,
+    		"frame rate": 24.0,
+    		"interlace": false,
+    		"height": 1080.0
+  		}
+	}
+	数据结构表示为
+	"node"(head)----->"Jack (\"Bee\") Nimble"
+		|
+	"format"(tail)--->"width"(head)--------->1920.0
+							|
+					  "frame rate"---------->24.0
+							|
+					  "interlace"----------->false
+							|
+					  "height"(tail)-------->1080.0
+	 */
+	// JNode为自定义数据结构
 	private JNode head;
 	private JNode tail;
 	private int size;
@@ -197,6 +223,10 @@ public class LinkedJSON extends AbstractJSON {
 	}
 
 	/**
+	 * 链表元素, 包含前后驱, 还有孩子节点
+	 * 孩子节点可以是value, 也可以代表一个新的JSON对象
+	 * 因此value只能用Object来描述
+	 *
 	 * @author jtchen
 	 * @version 1.0
 	 * @date 2021/3/10 19:40
@@ -212,8 +242,8 @@ public class LinkedJSON extends AbstractJSON {
 		1. Integer
 		2. Boolean
 		3. String
-		4. AbstractJSON
-		5. Object[]
+		4. JSON
+		5. JSONArray
 		 */
 		public Object value;
 

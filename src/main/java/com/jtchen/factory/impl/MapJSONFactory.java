@@ -8,6 +8,7 @@ import com.jtchen.factory.JSONFactory;
  * @version 1.0
  * @date 2021/3/11 12:01
  */
+@SuppressWarnings("unused")
 public class MapJSONFactory extends JSONFactory {
 	@Override
 	public JSON parse(String s) {

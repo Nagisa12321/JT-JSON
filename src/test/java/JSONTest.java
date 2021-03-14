@@ -38,7 +38,7 @@ public class JSONTest {
 
 	@Test
 	public void testInitialization() {
-		JSONFactory factory = new LinkedJSONFactory();
+		JSONFactory factory = LinkedJSONFactory.getInstance();
 
 		// 通过工厂产生一个json对象
 		JSON json = factory.parse(jsonStr);
@@ -52,7 +52,7 @@ public class JSONTest {
 	public void testParseNull() {
 		String s = "{ \"a\" : null  }";
 
-		JSONFactory factory = new LinkedJSONFactory();
+		JSONFactory factory = LinkedJSONFactory.getInstance();
 
 		// 通过工厂产生一个json对象
 		JSON json = factory.parse(s);
@@ -72,7 +72,7 @@ public class JSONTest {
 
 		System.out.println(parse);
 
-		LinkedJSONFactory factory = new LinkedJSONFactory();
+		JSONFactory factory = LinkedJSONFactory.getInstance();
 		JSON parse1 = factory.parse(s);
 		System.out.println(parse1);
 

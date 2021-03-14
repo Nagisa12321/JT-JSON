@@ -1,6 +1,5 @@
 package com.jtchen.utils.parsers;
 
-import org.apache.log4j.Logger;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -10,11 +9,10 @@ import static org.junit.Assert.assertEquals;
 public class NumberParserTest {
 
 	private NumberParser parser;
-	private final static Logger logger = Logger.getLogger(NumberParserTest.class);
 
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 
 		parser = new NumberParser();
 	}

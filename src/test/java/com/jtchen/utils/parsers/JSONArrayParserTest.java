@@ -4,8 +4,6 @@ import com.jtchen.beans.JSONArray;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
-
 public class JSONArrayParserTest {
 
 
@@ -13,7 +11,7 @@ public class JSONArrayParserTest {
 
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		parser = new JSONArrayParser();
 	}
 
@@ -47,7 +45,7 @@ public class JSONArrayParserTest {
 
 	@Test
 	public void test2() {
-		parseArray("[1, 2, 4],");
+		parseArray("[1, 2, 4]");
 	}
 
 	public void parseArray(String s) {

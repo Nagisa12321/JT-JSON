@@ -14,6 +14,7 @@ import static com.jtchen.utils.parsers.JSONParser.Brackets.LEFT_BRACKETS;
  * @version 1.0
  * @date 2021/3/13 17:59
  */
+@SuppressWarnings("StatementWithEmptyBody")
 public class JSONArrayParser implements Parser<JSONArray> {
 	private final BooleanParser booleanParser = new BooleanParser();
 	private final NullParser nullParser = new NullParser();

@@ -17,6 +17,7 @@ import static com.jtchen.utils.parsers.JSONParser.State.*;
  * @version 1.0
  * @date 2021/3/13 10:57
  */
+@SuppressWarnings("StatementWithEmptyBody")
 public class JSONParser implements Parser<JSON> {
 
 	private final JSONFactory factory;
@@ -30,8 +31,9 @@ public class JSONParser implements Parser<JSON> {
 	private final Stack<Object> stack = new Stack<>();
 
 
+	@SuppressWarnings("unused")
 	public JSONParser() {
-		factory = new LinkedJSONFactory();
+		factory = LinkedJSONFactory.getInstance();
 		init();
 	}
 
@@ -256,14 +258,6 @@ public class JSONParser implements Parser<JSON> {
 
 	 */
 
-	public JSON parse(String s) {
-		char[] chs = s.toCharArray();
-
-		for (char ch : chs) {
-			if (!parse(ch)) throw new JSONException("illegal character: " + ch);
-		}
-		return commit();
-	}
 
 
 	enum State {
@@ -283,9 +277,7 @@ public class JSONParser implements Parser<JSON> {
 	}
 
 	enum Brackets {
-		LEFT_BRACKETS,
-		RIGHT_BRACKETS;
-
+		LEFT_BRACKETS
 	}
 
 }

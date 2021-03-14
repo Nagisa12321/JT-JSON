@@ -10,22 +10,13 @@ import com.jtchen.factory.impl.LinkedJSONFactory;
  */
 public abstract class AbstractJSON implements JSON {
 
-	private JSONFactory parser = new LinkedJSONFactory();
-
-	/**
-	 * 函数功能: 解析json数据, 将字符串转化为JSON对象
-	 *
-	 * @param s 待解析json字符串
-	 * @return JSON对象
-	 */
-	public static JSON parse(String s) {
-		return null;
-	}
+	private final JSONFactory parser = LinkedJSONFactory.getInstance();
 
 	public String toString() {
 		return parser.unformattedParse(this);
 	}
 
 
-
+	// 往后可能会实现JSON接口定义的方法
+	// ....
 }

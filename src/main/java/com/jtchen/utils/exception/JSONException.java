@@ -7,6 +7,11 @@ package com.jtchen.utils.exception;
  */
 public class JSONException extends RuntimeException {
 
+	/*
+		JSON异常
+		一般用于JSON解析过程中解析失败抛出异常
+	 */
+	@SuppressWarnings("unused")
 	public JSONException() {
 	}
 
