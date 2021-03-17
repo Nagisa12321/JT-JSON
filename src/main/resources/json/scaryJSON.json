@@ -1,0 +1,29 @@
+{
+  "number1": 1.0000000000000002,
+  "number2": 1.7976931348623157e+308,
+  "number3": 4.9406564584124654E-324,
+  "Recursion": {
+    "Recursion": {
+      "Recursion": {
+        "Recursion": {
+          "Recursion": {
+            "Recursion": {
+              "Recursion": {
+                "Recursion": {
+                  "OK?": "ok!"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+
+  "true": true,
+  "false" : false,
+  "null": null,
+  "string": "\t \r \f \b   \\\\\\\\ \\/ \\t \\u \\r \\b \\f \\\"",
+  "array" : [1,2, 3, [1, 2, 3, [1, 2, 3, [1, 2, 3, [1, 2, 3, [1, 2, 3, [1, 2, 3, [1, 2, 3]]]]]]]]
+}

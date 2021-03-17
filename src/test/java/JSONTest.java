@@ -23,7 +23,7 @@ public class JSONTest {
 
 	@Before
 	public void getFile() throws Exception {
-		FileInputStream fis = new FileInputStream("src/main/resources/json1.json");
+		FileInputStream fis = new FileInputStream("src/main/resources/scaryJSON.json");
 		StringBuilder builder = new StringBuilder();
 
 		int data;
@@ -39,13 +39,18 @@ public class JSONTest {
 	// 测试官网的用例
 	@Test
 	public void testInitialization() {
+
 		JSONFactory factory = LinkedJSONFactory.getInstance();
 
 		// 通过工厂产生一个json对象
 		JSON json = factory.parse(jsonStr);
 
 		System.out.println(json);
+
+
+		// 自我解析
+		JSON parse = factory.parse(json);
+
+		System.out.println(parse);
 	}
-
-
 }

@@ -28,7 +28,11 @@ public class StringParser implements Parser<String> {
 		else return result;
 	}
 
-
+	/*
+	而对于 JSON字符串中的  是以 16 进制表示码点 U+0000 至 U+FFFF，我们需要：
+		1.解析 4 位十六进制整数为码点；
+		2.由于字符串是以 UTF-8 存储，我们要把这个码点编码成 UTF-8。
+	 */
 	@Override
 	public boolean parse(char ch) {
 		switch (state) {
@@ -44,44 +48,34 @@ public class StringParser implements Parser<String> {
 					state = ESCAPE;
 				} else if (ch == '"') {
 					state = END;
-				} else if (ch == '\b') {
-					builder.append('\\').append('b');
-				} else if (ch == '\n') {
-					builder.append('\\').append('n');
-				} else if (ch == '\f') {
-					builder.append('\\').append('f');
-				} else if (ch == '\t') {
-					builder.append('\\').append('t');
-				} else if (ch == '\r') {
-					builder.append('\\').append('r');
 				} else {
 					builder.append(ch);
 				}
 				break;
 			case ESCAPE:
 				if (ch == '\\') {
-					builder.append('\\').append('\\');
+					builder.append('\\');
 					state = READING;
 				} else if (ch == '/') {
 					builder.append('/');
 					state = READING;
 				} else if (ch == 'b') {
-					builder.append('\\').append('b');
+					builder.append('\b');
 					state = READING;
 				} else if (ch == 'f') {
-					builder.append('\\').append('f');
+					builder.append('\f');
 					state = READING;
 				} else if (ch == 'n') {
-					builder.append('\\').append('n');
+					builder.append('\n');
 					state = READING;
 				} else if (ch == 'r') {
-					builder.append('\\').append('r');
+					builder.append('\r');
 					state = READING;
 				} else if (ch == 't') {
-					builder.append('\\').append('t');
+					builder.append('\t');
 					state = READING;
 				} else if (ch == '"') {
-					builder.append('\\').append('"');
+					builder.append('\"');
 					state = READING;
 				} else return false;
 

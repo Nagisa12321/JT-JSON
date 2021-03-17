@@ -48,7 +48,7 @@ public class JSONArrayParser implements Parser<JSONArray> {
 	}
 
 	private boolean isSpace(char ch) {
-		return ch == ' ' || ch == '\n' || ch == '\t';
+		return ch == ' ' || ch == '\n' || ch == '\t' || ch == '\r';
 	}
 
 	@Override

@@ -27,35 +27,6 @@ public class StringParserTest {
 		System.out.println(testStr5);
 	}
 
-	// String ×ªÒå×Ö·û²âÊÔ2
-	@Test
-	public void test2() {
-		StringBuilder builder = new StringBuilder();
-		builder.append('\\');
-		builder.append('u');
-		builder.append('1');
-		builder.append('2');
-		builder.append('3');
-		builder.append('4');
-
-
-		System.out.println('\u1234');// ?
-
-	}
-
-	// String ×ªÒå×Ö·û²âÊÔ3
-	@Test
-	public void test4() {
-//		String s = "{ \"abc\" : \"de\"f\" }";
-//		System.out.println(s);
-//		char[] chs = s.toCharArray();
-//		System.out.println(Arrays.toString(chs));
-
-		JSONObject parse = (JSONObject) JSON.parse("{ \"abc\" : \"test\n\" }");
-		System.out.println(parse);
-		System.out.println(parse.getString("abc"));
-	}
-
 
 	@Test
 	public void testParse() {
@@ -69,7 +40,7 @@ public class StringParserTest {
 	@Test
 	public void test5() {
 
-		String s = "\"test\\\"";
+		String s = "\"test\"";
 		StringParser parser = new StringParser();
 
 		String result = null;
@@ -196,5 +167,10 @@ public class StringParserTest {
 
 		System.out.println(parse1);
 
+	}
+
+	@Test
+	public void testUnicode() {
+		System.out.println('\u52b2');
 	}
 }

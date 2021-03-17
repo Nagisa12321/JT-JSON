@@ -6,5 +6,6 @@
     "type": "rect",
     "interlace": false,
     "height": 1080.0
-  }
+  },
+  "arr": [1, 2, [true, "false"]]
 }

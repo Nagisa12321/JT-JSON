@@ -14,7 +14,7 @@ public abstract class JSONFactory {
 
 	/**
 	 * 通过字符串生产出具体JSON对象
-	 *
+	 * <p>
 	 * 抽象化原因: 我们不知道要生产出的是具体哪种JSON类型
 	 * 可能是MAPJSON, 也有可能是LINKEDJSON, 以后可能还会新增新的JSON,
 	 * 让子类决定我们应该产出什么JSON
@@ -66,9 +66,14 @@ public abstract class JSONFactory {
 
 			// --------- value ---------
 			Object value = entry.getValue();
+
+
 			// 若是字符串要加上引号
-			if (value instanceof String)
-				builder.append('"').append(value).append('"');
+			if (value instanceof String) {
+				builder.append('"');
+				builder.append(toJSONString((String) value));
+				builder.append('"');
+			}
 
 			else if (value == null)
 				builder.append("null");
@@ -82,6 +87,30 @@ public abstract class JSONFactory {
 			if (idx == set.size() - 1) builder.append('}');
 			else builder.append(',');
 			idx++;
+		}
+
+		return builder.toString();
+	}
+
+	// 把字符串中的内容转化为JSON原文
+	private String toJSONString(String s) {
+		StringBuilder builder = new StringBuilder();
+		char[] chs = s.toCharArray();
+
+		for (char ch : chs) {
+			if (ch == '\t') {
+				builder.append('\\').append('t');
+			} else if (ch == '\b') {
+				builder.append('\\').append('b');
+			} else if (ch == '\n') {
+				builder.append('\\').append('n');
+			} else if (ch == '\f') {
+				builder.append('\\').append('f');
+			}  else if (ch == '\r') {
+				builder.append('\\').append('r');
+			}else if (ch == '\"') {
+				builder.append('\\').append('"');
+			} else builder.append(ch);
 		}
 
 		return builder.toString();
